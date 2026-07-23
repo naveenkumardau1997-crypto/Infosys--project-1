@@ -1,15 +1,25 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 import os
 import base64
 import uuid
+from risk_engine import get_score, get_risk_level
+from risk_engine import add_event
+from risk_engine import (
+    add_event,
+    get_score,
+    get_risk_level,
+    get_events
+)
+
 
 app = Flask(__name__)
 
 app.secret_key = "online_exam_secret_key"
 
 DATABASE = "database.db"
+LOG_FILE = "events.log"
 
 
 # ==============================
@@ -206,7 +216,9 @@ def dashboard():
 
         "dashboard.html",
 
-        user=session["user"]
+        user=session["user"],
+        risk_score=get_score(),
+        risk_level=get_risk_level()
 
     )
 
@@ -222,6 +234,61 @@ def logout():
 
     return redirect("/")
 
+
+# ----------------------------
+# Browser Event Logging
+# ----------------------------
+
+@app.route("/log_event", methods=["POST"])
+def log_event():
+
+    data = request.get_json()
+    event = data.get("event")
+
+    # Assign points based on the event
+    if event == "Tab Switched":
+        add_event(event, 3)
+
+    elif event == "Window Lost Focus":
+        add_event(event, 2)
+
+    elif event == "Right Click Detected":
+        add_event(event, 1)
+
+    elif event in ["Copy Attempt", "Ctrl + C"]:
+        add_event(event, 2)
+
+    elif event in ["Paste Attempt", "Ctrl + V"]:
+        add_event(event, 2)
+
+    elif event == "Developer Tools Attempt":
+        add_event(event, 5)
+
+    from datetime import datetime
+
+    with open(LOG_FILE, "a", encoding="utf-8") as file:
+        file.write(
+            f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {event}\n"
+        )
+
+    return jsonify({"status": "success"})
+
+# ----------------------------
+# Live Dashboard API
+# ----------------------------
+
+@app.route("/dashboard_data")
+def dashboard_data():
+
+    return jsonify({
+
+        "score": get_score(),
+
+        "level": get_risk_level(),
+
+        "events": get_events()
+
+    })
 
 # ==============================
 # Run Flask

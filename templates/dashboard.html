@@ -4,7 +4,6 @@
 <head>
 
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Candidate Dashboard</title>
@@ -18,64 +17,39 @@
 
     <style>
         body {
-
             overflow: auto;
             padding: 40px;
-
         }
 
         .dashboard {
-
             width: 100%;
-
-            animation: fadeIn 1s ease;
-
         }
 
         .header {
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
-            margin-bottom: 40px;
-
+            margin-bottom: 35px;
         }
 
         .profile {
-
             display: flex;
-
             align-items: center;
-
             gap: 20px;
-
         }
 
         .profile img {
-
             width: 80px;
-
             height: 80px;
-
             border-radius: 50%;
-
             border: 4px solid #00c6ff;
-
             object-fit: cover;
-
         }
 
         .grid {
-
             display: grid;
-
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-
             gap: 25px;
-
         }
 
         .card {
@@ -83,7 +57,6 @@
             background: rgba(255, 255, 255, .12);
 
             -webkit-backdrop-filter: blur(18px);
-
             backdrop-filter: blur(18px);
 
             border-radius: 20px;
@@ -114,12 +87,6 @@
 
         }
 
-        .card h2 {
-
-            margin-bottom: 12px;
-
-        }
-
         .status {
 
             color: #00ff88;
@@ -132,7 +99,7 @@
 
             display: inline-block;
 
-            margin-top: 40px;
+            margin-top: 30px;
 
             padding: 15px 35px;
 
@@ -144,15 +111,62 @@
 
             text-decoration: none;
 
-            font-weight: 600;
+            font-weight: bold;
 
         }
 
-        .logout:hover {
+        .monitor-container {
 
-            transform: translateY(-3px);
+            display: flex;
 
-            box-shadow: 0 10px 20px rgba(0, 198, 255, .4);
+            gap: 20px;
+
+            margin-top: 35px;
+
+        }
+
+        .monitor-card {
+
+            flex: 1;
+
+            background: rgba(255, 255, 255, .12);
+
+            -webkit-backdrop-filter: blur(18px);
+            backdrop-filter: blur(18px);
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            border: 1px solid rgba(255, 255, 255, .15);
+
+        }
+
+        .monitor-card h1 {
+
+            color: #00e5ff;
+
+            font-size: 42px;
+
+        }
+
+        #eventList {
+
+            list-style: none;
+
+            padding: 0;
+
+        }
+
+        #eventList li {
+
+            padding: 10px;
+
+            margin: 8px 0;
+
+            background: rgba(255, 255, 255, .08);
+
+            border-radius: 8px;
 
         }
     </style>
@@ -162,14 +176,8 @@
 <body>
 
     <div class="background">
-
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
     </div>
 
     <div class="dashboard">
@@ -186,7 +194,7 @@
 
                 {% else %}
 
-                <img src="https://i.pravatar.cc/100" alt="Default profile avatar">
+                <img src="https://i.pravatar.cc/100" alt="{{ user.name }} profile photo">
 
                 {% endif %}
 
@@ -194,11 +202,7 @@
 
                     <h3>{{ user.name }}</h3>
 
-                    <p class="status">
-
-                        ● Session Active
-
-                    </p>
+                    <p class="status">● Session Active</p>
 
                 </div>
 
@@ -214,11 +218,7 @@
 
                 <h2>Authentication</h2>
 
-                <p>
-
-                    Candidate verified successfully.
-
-                </p>
+                <p>Candidate Verified Successfully</p>
 
             </div>
 
@@ -228,11 +228,7 @@
 
                 <h2>Camera</h2>
 
-                <p>
-
-                    Webcam Connected
-
-                </p>
+                <p>Webcam Connected</p>
 
             </div>
 
@@ -242,11 +238,7 @@
 
                 <h2>Session Timer</h2>
 
-                <h3 id="timer">
-
-                    00:00:00
-
-                </h3>
+                <h2 id="timer">00:00:00</h2>
 
             </div>
 
@@ -256,29 +248,11 @@
 
                 <h2>Candidate</h2>
 
-                <p>
+                <p><b>Name :</b> {{ user.name }}</p>
 
-                    <b>Name:</b>
+                <p><b>Email :</b> {{ user.email }}</p>
 
-                    {{ user.name }}
-
-                </p>
-
-                <p>
-
-                    <b>Email:</b>
-
-                    {{ user.email }}
-
-                </p>
-
-                <p>
-
-                    <b>Mobile:</b>
-
-                    {{ user.mobile }}
-
-                </p>
+                <p><b>Mobile :</b> {{ user.mobile }}</p>
 
             </div>
 
@@ -294,29 +268,11 @@
 
             <div class="card">
 
-                <i class="fas fa-shield-alt"></i>
-
-                <h2>Integrity</h2>
-
-                <p>
-
-                    No suspicious activity detected.
-
-                </p>
-
-            </div>
-
-            <div class="card">
-
                 <i class="fas fa-chart-line"></i>
 
                 <h2>Analytics</h2>
 
-                <p>
-
-                    Real-Time Monitoring Enabled
-
-                </p>
+                <p>AI Monitoring Enabled</p>
 
             </div>
 
@@ -326,13 +282,47 @@
 
                 <h2>Database</h2>
 
-                <p>
-
-                    Candidate information stored successfully.
-
-                </p>
+                <p>Candidate Data Stored Successfully</p>
 
             </div>
+
+            <div class="card">
+
+                <i class="fas fa-shield-alt"></i>
+
+                <h2>Integrity</h2>
+
+                <p>Live Monitoring Running</p>
+
+            </div>
+
+        </div>
+
+        <div class="monitor-container">
+
+            <div class="monitor-card">
+
+                <h2>Risk Score</h2>
+
+                <h1 id="riskScore">0</h1>
+
+            </div>
+
+            <div class="monitor-card">
+
+                <h2>Risk Level</h2>
+
+                <h1 id="riskLevel">LOW</h1>
+
+            </div>
+
+        </div>
+
+        <div class="monitor-card">
+
+            <h2>Recent Suspicious Events</h2>
+
+            <ul id="eventList"></ul>
 
         </div>
 
@@ -350,7 +340,7 @@
 
         let seconds = 0;
 
-        function timer() {
+        setInterval(function () {
 
             seconds++;
 
@@ -368,27 +358,15 @@
 
                 String(s).padStart(2, "0");
 
-        }
+        }, 1000);
 
-        setInterval(timer, 1000);
-
-        document.getElementById("today").innerHTML =
-
-            new Date().toDateString();
-
-        const logout = document.querySelector(".logout");
-
-        logout.addEventListener("click", function (e) {
-
-            if (!confirm("Logout from session?")) {
-
-                e.preventDefault();
-
-            }
-
-        });
+        document.getElementById("today").innerHTML = new Date().toDateString();
 
     </script>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/monitoring.js') }}"></script>
 
 </body>
 
